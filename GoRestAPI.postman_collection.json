@@ -1,0 +1,237 @@
+{
+	"info": {
+		"_postman_id": "90032b34-22d5-4743-9a74-051da9b68120",
+		"name": "GoRestAPI",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "12628210"
+	},
+	"item": [
+		{
+			"name": "Create User",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var random = Math.random().toString(36).substring(2);\r",
+							"\r",
+							"var username = \"jim\"+random\r",
+							"var useremail = \"jim\"+random+\"@gmail.com\"\r",
+							"\r",
+							"pm.collectionVariables.set(\"user_name\",username)\r",
+							"pm.collectionVariables.set(\"user_email\",useremail)"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsondata = JSON.parse(responseBody)\r",
+							"\r",
+							"pm.environment.set(\"id_val\",jsondata.id)"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"name\":\"{{user_name}}\", \r\n\"gender\":\"male\", \r\n\"email\":\"{{user_email}}\", \r\n\"status\":\"active\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{GoRest_url}}/public/v2/users",
+					"host": [
+						"{{GoRest_url}}"
+					],
+					"path": [
+						"public",
+						"v2",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get User details",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var UpdateJson = JSON.parse(responseBody)\r",
+							"\r",
+							"pm.test(\"Validate username\",()=>{\r",
+							"\r",
+							"pm.expect(UpdateJson.name).to.eql(pm.collectionVariables.get(\"user_name\"))\r",
+							"\r",
+							"\r",
+							"\r",
+							"})\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{GoRest_url}}/public/v2/users/{{id_val}}",
+					"host": [
+						"{{GoRest_url}}"
+					],
+					"path": [
+						"public",
+						"v2",
+						"users",
+						"{{id_val}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Details",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var random = Math.random().toString(36).substring(2);\r",
+							"\r",
+							"var username = \"jim1\"+random\r",
+							"var useremail = \"jim1\"+random+\"@gmail.com\"\r",
+							"\r",
+							"pm.collectionVariables.set(\"user_name\",username)\r",
+							"pm.collectionVariables.set(\"user_email\",useremail)"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var UpdateJson = JSON.parse(responseBody)\r",
+							"\r",
+							"pm.test(\"Validate username\",()=>{\r",
+							"\r",
+							"pm.expect(UpdateJson.name).to.eql(pm.environment.get(\"user_name\"))\r",
+							"\r",
+							"})\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"name\":\"{{user_name}}\", \r\n\"email\":\"{{user_email}}}\", \r\n\"status\":\"active\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{GoRest_url}}/public/v2/users/{{id_val}}",
+					"host": [
+						"{{GoRest_url}}"
+					],
+					"path": [
+						"public",
+						"v2",
+						"users",
+						"{{id_val}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.collectionVariables.unset(\"user_name\")\r",
+							"pm.collectionVariables.unset(\"user_email\")"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{GoRest_url}}/public/v2/users/{{id_val}}",
+					"host": [
+						"{{GoRest_url}}"
+					],
+					"path": [
+						"public",
+						"v2",
+						"users",
+						"{{id_val}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "893989bdb3473b605b01cd60ada007b593ef6763bd8b9a19ec4f3a73aed079bc",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "GoRest_url",
+			"value": "https://gorest.co.in",
+			"type": "string"
+		}
+	]
+}
